@@ -10,4 +10,4 @@ npm install https://github.com/hegrec/immodispo-api-client/archive/0.1.0.tar.gz 
 ```
 
 
-<h3>TODO: POST, PUT, DELETE support</h3>
+<h3>TODO: PUT, DELETE support</h3>
