@@ -23,7 +23,8 @@ function APIClient() {
 
     function post(resource, data, cb) {
         var options = {
-            headers: {'X-Epic-Auth': authToken}
+            headers: {'X-Epic-Auth': authToken},
+            multipart: true
         };
 
         needle.post(resource, data, options, function (error, response) {
