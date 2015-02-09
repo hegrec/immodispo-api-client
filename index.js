@@ -10,7 +10,7 @@ function stripNullUndefined(obj) {
     var sendable = {};
     _.forOwn(obj, function(val, key) {
         //strip undefined and null
-        if (!(_.isNull(val) || _.isUndefined(val)) {
+        if (!(_.isNull(val) || _.isUndefined(val))) {
             sendable[key] = val;
         }
     })
