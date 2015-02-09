@@ -3,6 +3,20 @@
 var _ = require('lodash'),
     needle = require('needle');
 
+/**
+  * Strip these as they will be treated by the API as null if not sent
+*/
+function stripNullUndefined(obj) {
+    var sendable = {};
+    _.forOwn(obj, function(val, key) {
+        //strip undefined and null
+        if (val || val === false) {
+            sendable[key] = val;
+        }
+    })
+    return sendable;
+}
+
 function APIClient() {
     var authToken = 'supersecretkey';
 
@@ -23,11 +37,10 @@ function APIClient() {
 
     function post(resource, data, cb) {
         var options = {
-            headers: {'X-Epic-Auth': authToken},
-            multipart: true
+            headers: {'X-Epic-Auth': authToken}
         };
 
-        needle.post(resource, data, options, function (error, response) {
+        needle.post(resource, stripNullUndefined(data), options, function (error, response) {
             if (error) {
                 return cb(error);
             }
