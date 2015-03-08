@@ -20,81 +20,84 @@ function stripNullUndefined(obj) {
     return sendable;
 }
 
-function APIClient() {
+function ApiClient(username, password) {
+    this.username = '';
+    this.password = '';
 
-    var authToken = 'supersecretkey';
-
-    function get(resource, cb) {
-
-        var options = {
-            headers: {'X-Epic-Auth': authToken}
-        };
-
-        needle.get(resource, options, function (error, response) {
-            if (error) {
-                return cb(error);
-            }
-
-            cb(null, response.body);
-        });
+    if (username) {
+        this.username = username;
     }
 
-    function post(resource, data, cb) {
-
-        var options = {
-            headers: {'X-Epic-Auth': authToken}
-        };
-
-        needle.post(resource, stripNullUndefined(data), options, function (error, response) {
-            if (error) {
-                return cb(error);
-            }
-
-            cb(null, response.body);
-        });
+    if (password) {
+        this.password = password;
     }
-
-    function put(resource, data, cb) {
-
-        var options = {
-            headers: {'X-Epic-Auth': authToken}
-        };
-
-        needle.put(resource, stripNullUndefined(data), options, function (error, response) {
-            if (error) {
-                return cb(error);
-            }
-
-            cb(null, response.body);
-        });
-    }
-
-    function remove(resource, cb) {
-
-        var options = {
-            headers: {'X-Epic-Auth': authToken}
-        };
-
-        needle.delete(resource, null, options, function (error, response) {
-            if (error) {
-                return cb(error);
-            }
-
-            cb(null, response.body);
-        });
-    }
-
-    function setAuthToken(token) {
-        authToken = token;
-    }
-
-    return {
-        get: get,
-        delete: remove,
-        put: put,
-        post: post,
-        setAuthToken: setAuthToken
-    };
 }
 
-module.exports = APIClient();
+ApiClient.prototype.get = function get(resource, cb) {
+    var options = {
+        username: this.username,
+        password: this.password
+    };
+
+    needle.get(resource, options, function (error, response) {
+        if (error) {
+            return cb(error);
+        }
+
+        cb(null, response.body);
+    });
+}
+
+ApiClient.prototype.post = function post(resource, data, cb) {
+    var options = {
+        username: this.username,
+        password: this.password
+    };
+
+    needle.post(resource, stripNullUndefined(data), options, function (error, response) {
+        if (error) {
+            return cb(error);
+        }
+
+        cb(null, response.body);
+    });
+}
+
+ApiClient.prototype.put = function put(resource, data, cb) {
+    var options = {
+        username: this.username,
+        password: this.password
+    };
+
+    needle.put(resource, stripNullUndefined(data), options, function (error, response) {
+        if (error) {
+            return cb(error);
+        }
+
+
+
+        cb(null, response.body);
+    });
+}
+
+ApiClient.prototype.remove = function remove(resource, cb) {
+    var options = {
+        username: this.username,
+        password: this.password
+    };
+
+    needle.delete(resource, null, options, function (error, response) {
+        if (error) {
+            return cb(error);
+        }
+
+        cb(null, response.body);
+    });
+}
+
+ApiClient.prototype.setAuthorization = function setAuthorization(username, password) {
+    this.username = username;
+    this.password = password;
+}
+
+module.exports = ApiClient;
